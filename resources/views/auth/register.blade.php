@@ -1,3 +1,5 @@
 <x-layout :title="__('Register')">
-    <livewire:auth.register />
+    <div class="mx-auto w-full max-w-sm">
+        <livewire:auth.register />
+    </div>
 </x-layout>

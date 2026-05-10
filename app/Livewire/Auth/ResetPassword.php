@@ -3,11 +3,8 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -16,8 +13,11 @@ use Livewire\Component;
 class ResetPassword extends Component
 {
     public string $email = '';
+
     public string $token = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     /**
@@ -38,6 +38,7 @@ class ResetPassword extends Component
 
         if (! $user) {
             $this->addError('email', __('We can\'t find a user with that email address.'));
+
             return;
         }
 
@@ -56,7 +57,7 @@ class ResetPassword extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.auth.reset-password');
     }

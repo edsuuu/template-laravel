@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Auth;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Laravel\Fortify\Events\TwoFactorAuthenticationFailed;
-use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\TwoFactorLoginRequest;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -50,6 +49,7 @@ class TwoFactorChallenge extends Component
 
         $request->merge(['code' => $this->code]);
 
+        /** @var User $user */
         $user = $request->challengedUser();
 
         if ($request->hasValidCode()) {
@@ -74,6 +74,7 @@ class TwoFactorChallenge extends Component
 
         $request->merge(['recovery_code' => $this->recovery_code]);
 
+        /** @var \App\Models\User $user */
         $user = $request->challengedUser();
 
         if ($recoveryCode = $request->validRecoveryCode()) {

@@ -3,9 +3,11 @@
 namespace App\Livewire\Settings;
 
 use App\Concerns\ProfileValidationRules;
+use App\Models\User;
 use Flux\Flux;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -24,8 +26,11 @@ class Profile extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        /** @var User $user */
+        $user = Auth::user();
+
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
 
     /**
@@ -33,6 +38,7 @@ class Profile extends Component
      */
     public function updateProfileInformation(): void
     {
+        /** @var User $user */
         $user = Auth::user();
 
         $validated = $this->validate($this->profileRules($user->id));
@@ -53,6 +59,7 @@ class Profile extends Component
      */
     public function resendVerificationNotification(): void
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
@@ -69,20 +76,29 @@ class Profile extends Component
     #[Computed]
     public function hasUnverifiedEmail(): bool
     {
-        return Auth::user() instanceof MustVerifyEmail && ! Auth::user()->hasVerifiedEmail();
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail();
     }
 
     #[Computed]
     public function showDeleteUser(): bool
     {
-        return ! Auth::user() instanceof MustVerifyEmail
-            || (Auth::user() instanceof MustVerifyEmail && Auth::user()->hasVerifiedEmail());
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (! $user instanceof MustVerifyEmail) {
+            return true;
+        }
+
+        return $user->hasVerifiedEmail();
     }
 
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.settings.profile');
     }
