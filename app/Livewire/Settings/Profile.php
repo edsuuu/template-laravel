@@ -43,6 +43,7 @@ class Profile extends Component
         /** @var User $user */
         $user = Auth::user();
 
+        /** @var array<string, mixed> $validated */
         $validated = $this->validate($this->profileRules($user->id));
 
         $user->fill($validated);

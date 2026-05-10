@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -59,7 +60,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     {
         $this->gate();
 
-        Telescope::auth(fn ($request) => Gate::check('viewTelescope', [$request->user()])
+        Telescope::auth(fn (Request $request) => Gate::check('viewTelescope', [$request->user()])
             ?: abort(403, __('This action is unauthorized.')));
     }
 

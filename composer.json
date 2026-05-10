@@ -22,6 +22,7 @@
         "spatie/laravel-permission": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^4.2",
         "driftingly/rector-laravel": "^2.3",
         "fakerphp/faker": "^1.24",
         "larastan/larastan": "^3.0",
