@@ -11,14 +11,11 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-6">
-        @csrf
-
+    <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
         <!-- Email Address -->
         <flux:input
-            name="email"
+            wire:model="email"
             :label="__('Email address')"
-            :value="old('email')"
             type="email"
             required
             autofocus

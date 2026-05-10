@@ -10,12 +10,10 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.confirm.store') }}" class="flex flex-col gap-6">
-        @csrf
-
+    <form wire:submit="confirmPassword" class="flex flex-col gap-6">
         <!-- Password -->
         <flux:input
-            name="password"
+            wire:model="password"
             :label="__('Password')"
             type="password"
             required

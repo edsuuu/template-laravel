@@ -1,0 +1,101 @@
+<?php
+
+namespace App\Livewire\Auth;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Laravel\Fortify\Events\TwoFactorAuthenticationFailed;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Requests\TwoFactorLoginRequest;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+
+#[Title('Two-factor challenge')]
+class TwoFactorChallenge extends Component
+{
+    /**
+     * The recovery code.
+     */
+    public string $recovery_code = '';
+
+    /**
+     * The two-factor authentication code.
+     */
+    public string $code = '';
+
+    /**
+     * Log in using the two-factor authentication code.
+     */
+    public function login(): void
+    {
+        $this->validate([
+            'code' => ['nullable', 'string'],
+            'recovery_code' => ['nullable', 'string'],
+        ]);
+
+        if ($this->recovery_code) {
+            $this->loginWithRecoveryCode();
+        } else {
+            $this->loginWithTwoFactorCode();
+        }
+    }
+
+    /**
+     * Log in using the two-factor authentication code.
+     */
+    protected function loginWithTwoFactorCode(): void
+    {
+        $request = app(TwoFactorLoginRequest::class);
+
+        $request->merge(['code' => $this->code]);
+
+        $user = $request->challengedUser();
+
+        if ($request->hasValidCode()) {
+            Auth::login($user, $request->remember());
+
+            $request->session()->forget('login.id');
+
+            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        } else {
+            event(new TwoFactorAuthenticationFailed($user));
+
+            $this->addError('code', __('The provided two-factor authentication code was invalid.'));
+        }
+    }
+
+    /**
+     * Log in using the recovery code.
+     */
+    protected function loginWithRecoveryCode(): void
+    {
+        $request = app(TwoFactorLoginRequest::class);
+
+        $request->merge(['recovery_code' => $this->recovery_code]);
+
+        $user = $request->challengedUser();
+
+        if ($recoveryCode = $request->validRecoveryCode()) {
+            $user->replaceRecoveryCode($recoveryCode);
+
+            Auth::login($user, $request->remember());
+
+            $request->session()->forget('login.id');
+
+            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        } else {
+            event(new TwoFactorAuthenticationFailed($user));
+
+            $this->addError('recovery_code', __('The provided recovery code was invalid.'));
+        }
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View
+    {
+        return view('livewire.auth.two-factor-challenge');
+    }
+}

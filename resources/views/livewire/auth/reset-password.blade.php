@@ -4,16 +4,11 @@
         <flux:subheading>{{ __('Enter your new password below') }}</flux:subheading>
     </div>
 
-    <form method="POST" action="{{ route('password.update') }}" class="flex flex-col gap-6">
-        @csrf
-
-        <input type="hidden" name="token" value="{{ $token }}">
-
+    <form wire:submit="resetPassword" class="flex flex-col gap-6">
         <!-- Email Address -->
         <flux:input
-            name="email"
+            wire:model="email"
             :label="__('Email address')"
-            :value="old('email', $email)"
             type="email"
             required
             readonly
@@ -22,7 +17,7 @@
 
         <!-- Password -->
         <flux:input
-            name="password"
+            wire:model="password"
             :label="__('Password')"
             type="password"
             required
@@ -34,7 +29,7 @@
 
         <!-- Confirm Password -->
         <flux:input
-            name="password_confirmation"
+            wire:model="password_confirmation"
             :label="__('Confirm password')"
             type="password"
             required

@@ -42,13 +42,12 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('two-factor.login.store') }}">
-            @csrf
-
+        <form wire:submit="login">
             <div class="space-y-5 text-center">
                 <div x-show="!showRecoveryInput">
                     <div class="flex items-center justify-center my-5" x-ref="otp">
                         <flux:otp
+                            wire:model="code"
                             length="6"
                             name="code"
                             label="OTP Code"
@@ -56,22 +55,27 @@
                             class="mx-auto"
                          />
                     </div>
+
+                    @error('code')
+                        <flux:text color="red" size="sm">
+                            {{ $message }}
+                        </flux:text>
+                    @enderror
                 </div>
 
                 <div x-show="showRecoveryInput">
                     <div class="my-5">
                         <flux:input
+                            wire:model="recovery_code"
                             type="text"
                             name="recovery_code"
                             x-ref="recovery_code"
-                            x-bind:required="showRecoveryInput"
                             autocomplete="one-time-code"
-                            x-model="recovery_code"
                         />
                     </div>
 
                     @error('recovery_code')
-                        <flux:text color="red">
+                        <flux:text color="red" size="sm">
                             {{ $message }}
                         </flux:text>
                     @enderror

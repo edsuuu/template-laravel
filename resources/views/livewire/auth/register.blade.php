@@ -11,14 +11,11 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
-        @csrf
-
+    <form wire:submit="register" class="flex flex-col gap-6">
         <!-- Name -->
         <flux:input
-            name="name"
+            wire:model="name"
             :label="__('Name')"
-            :value="old('name')"
             type="text"
             required
             autofocus
@@ -28,9 +25,8 @@
 
         <!-- Email Address -->
         <flux:input
-            name="email"
+            wire:model="email"
             :label="__('Email address')"
-            :value="old('email')"
             type="email"
             required
             autocomplete="email"
@@ -39,7 +35,7 @@
 
         <!-- Password -->
         <flux:input
-            name="password"
+            wire:model="password"
             :label="__('Password')"
             type="password"
             required
@@ -50,7 +46,7 @@
 
         <!-- Confirm Password -->
         <flux:input
-            name="password_confirmation"
+            wire:model="password_confirmation"
             :label="__('Confirm password')"
             type="password"
             required

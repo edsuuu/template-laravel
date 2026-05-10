@@ -11,14 +11,11 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
-        @csrf
-
+    <form wire:submit="login" class="flex flex-col gap-6">
         <!-- Email Address -->
         <flux:input
-            name="email"
+            wire:model="email"
             :label="__('Email address')"
-            :value="old('email')"
             type="email"
             required
             autofocus
@@ -29,7 +26,7 @@
         <!-- Password -->
         <div class="relative">
             <flux:input
-                name="password"
+                wire:model="password"
                 :label="__('Password')"
                 type="password"
                 required
@@ -46,7 +43,7 @@
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
