@@ -26,13 +26,15 @@
             <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
                 <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
-                <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
+                <x-app-logo href="{{ route('home') }}" wire:navigate />
 
-                <flux:navbar class="-mb-px max-lg:hidden">
-                    <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </flux:navbar.item>
-                </flux:navbar>
+                @auth
+                    <flux:navbar class="-mb-px max-lg:hidden">
+                        <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:navbar.item>
+                    </flux:navbar>
+                @endauth
 
                 <flux:spacer />
 
@@ -94,7 +96,7 @@
         <flux:main>
             {{ $slot }}
         </flux:main>
- 
+
         @livewireScripts
         @fluxScripts
     </body>

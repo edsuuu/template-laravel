@@ -55,7 +55,7 @@ final class TwoFactorChallenge extends Component
      */
     private function loginWithTwoFactorCode(): void
     {
-        $request = app(TwoFactorLoginRequest::class);
+        $request = resolve(TwoFactorLoginRequest::class);
 
         $request->merge(['code' => $this->code]);
 
@@ -80,7 +80,7 @@ final class TwoFactorChallenge extends Component
      */
     private function loginWithRecoveryCode(): void
     {
-        $request = app(TwoFactorLoginRequest::class);
+        $request = resolve(TwoFactorLoginRequest::class);
 
         $request->merge(['recovery_code' => $this->recovery_code]);
 

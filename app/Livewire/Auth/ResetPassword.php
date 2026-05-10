@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 use Livewire\Attributes\Title;

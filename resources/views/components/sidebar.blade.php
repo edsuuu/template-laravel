@@ -1,13 +1,15 @@
 <flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-    <x-app-logo href="{{ route('dashboard') }}" class="px-2" wire:navigate />
+    <x-app-logo href="{{ route('home') }}" class="px-2" wire:navigate />
 
-    <flux:navlist variant="grid">
-        <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-            {{ __('Dashboard') }}
-        </flux:navlist.item>
-    </flux:navlist>
+    @auth
+        <flux:navlist variant="grid">
+            <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                {{ __('Dashboard') }}
+            </flux:navlist.item>
+        </flux:navlist>
+    @endauth
 
     <flux:spacer />
 

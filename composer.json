@@ -70,8 +70,14 @@
         ],
         "check": [
             "@phpstan",
-            "@lint:check",
+            "@lint",
             "@test"
+        ],
+        "rector": [
+            "rector process"
+        ],
+        "rector:check": [
+            "rector process --dry-run"
         ],
         "lint:check": [
             "pint --parallel --test",
@@ -83,7 +89,6 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@lint:check",
             "@php artisan test"
         ],
         "post-autoload-dump": [

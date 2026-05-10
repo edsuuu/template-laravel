@@ -15,14 +15,11 @@ final class Seeder002AdminUser extends Seeder
      */
     public function run(): void
     {
-        $admin = User::updateOrCreate(
-            ['email' => 'admin@admin.com'],
-            [
-                'name' => 'Administrador',
-                'password' => Hash::make('123'),
-                'email_verified_at' => now(),
-            ]
-        );
+        $admin = User::query()->updateOrCreate(['email' => 'admin@admin.com'], [
+            'name' => 'Administrador',
+            'password' => Hash::make('123'),
+            'email_verified_at' => now(),
+        ]);
 
         $admin->assignRole('Administrador');
     }

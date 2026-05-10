@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'back_to_system_url' => config('app.url', null),
+    'back_to_system_url' => config('app.url'),
 
     'back_to_system_label' => null, // Displayed by default: "Back to {{ app.name }}"
 
@@ -238,7 +238,7 @@ return [
     |
     */
 
-    'cache_driver' => env('LOG_VIEWER_CACHE_DRIVER', null),
+    'cache_driver' => env('LOG_VIEWER_CACHE_DRIVER'),
 
     /*
     |--------------------------------------------------------------------------
