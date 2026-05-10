@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/template-project",
+    "name": "edsuuu/template-laravel",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
+    "description": "Template Laravel 13 com Livewire 4, Flux UI e Tailwind 4.",
     "keywords": [
         "laravel",
         "framework"
