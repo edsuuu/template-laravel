@@ -11,7 +11,7 @@ use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
-class RecoveryCodes extends Component
+final class RecoveryCodes extends Component
 {
     /**
      * @var array<int, string>
@@ -41,6 +41,14 @@ class RecoveryCodes extends Component
     }
 
     /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View
+    {
+        return view('livewire.settings.two-factor.recovery-codes');
+    }
+
+    /**
      * Load the recovery codes for the user.
      */
     private function loadRecoveryCodes(): void
@@ -59,13 +67,5 @@ class RecoveryCodes extends Component
                 $this->recoveryCodes = [];
             }
         }
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View
-    {
-        return view('livewire.settings.two-factor.recovery-codes');
     }
 }

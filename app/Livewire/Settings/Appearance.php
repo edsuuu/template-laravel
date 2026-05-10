@@ -9,7 +9,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Appearance settings')]
-class Appearance extends Component
+final class Appearance extends Component
 {
     /**
      * Get the view / contents that represent the component.

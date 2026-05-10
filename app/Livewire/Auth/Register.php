@@ -12,7 +12,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Register')]
-class Register extends Component
+final class Register extends Component
 {
     public string $name = '';
 

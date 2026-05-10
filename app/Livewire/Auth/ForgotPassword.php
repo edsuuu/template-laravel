@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Forgot password')]
-class ForgotPassword extends Component
+final class ForgotPassword extends Component
 {
     public string $email = '';
 

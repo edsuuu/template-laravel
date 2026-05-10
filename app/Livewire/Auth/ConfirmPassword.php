@@ -12,7 +12,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Confirm password')]
-class ConfirmPassword extends Component
+final class ConfirmPassword extends Component
 {
     public string $password = '';
 

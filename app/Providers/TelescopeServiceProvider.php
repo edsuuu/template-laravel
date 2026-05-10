@@ -12,7 +12,7 @@ use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 use Override;
 
-class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
+final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**
      * Register any application services.
@@ -26,30 +26,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
-        Telescope::filter(fn (IncomingEntry $entry) => $isLocal ||
+        Telescope::filter(fn (IncomingEntry $entry): bool => $isLocal ||
                $entry->isReportableException() ||
                $entry->isFailedRequest() ||
                $entry->isFailedJob() ||
                $entry->isScheduledTask() ||
                $entry->hasMonitoredTag());
-    }
-
-    /**
-     * Prevent sensitive request details from being logged by Telescope.
-     */
-    protected function hideSensitiveRequestDetails(): void
-    {
-        if ($this->app->environment('local')) {
-            return;
-        }
-
-        Telescope::hideRequestParameters(['_token']);
-
-        Telescope::hideRequestHeaders([
-            'cookie',
-            'x-csrf-token',
-            'x-xsrf-token',
-        ]);
     }
 
     /**
@@ -72,6 +54,24 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     #[Override]
     protected function gate(): void
     {
-        Gate::define('viewTelescope', fn (User $user) => $user->hasRole('Administrador'));
+        Gate::define('viewTelescope', fn (User $user): bool => $user->hasRole('Administrador'));
+    }
+
+    /**
+     * Prevent sensitive request details from being logged by Telescope.
+     */
+    private function hideSensitiveRequestDetails(): void
+    {
+        if ($this->app->environment('local')) {
+            return;
+        }
+
+        Telescope::hideRequestParameters(['_token']);
+
+        Telescope::hideRequestHeaders([
+            'cookie',
+            'x-csrf-token',
+            'x-xsrf-token',
+        ]);
     }
 }

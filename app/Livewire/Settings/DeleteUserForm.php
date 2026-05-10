@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class DeleteUserForm extends Component
+final class DeleteUserForm extends Component
 {
     use PasswordValidationRules;
 

@@ -23,7 +23,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Title('Security settings')]
-class Security extends Component
+final class Security extends Component
 {
     use PasswordValidationRules;
 
@@ -86,10 +86,10 @@ class Security extends Component
                 'current_password' => $this->currentPasswordRules(),
                 'password' => $this->passwordRules(),
             ]);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $validationException) {
             $this->reset('current_password', 'password', 'password_confirmation');
 
-            throw $e;
+            throw $validationException;
         }
 
         /** @var User $user */
@@ -121,25 +121,6 @@ class Security extends Component
         $this->loadSetupData();
 
         $this->showModal = true;
-    }
-
-    /**
-     * Load the two-factor authentication setup data for the user.
-     */
-    private function loadSetupData(): void
-    {
-        /** @var User $user */
-        $user = auth()->user();
-
-        try {
-            $this->qrCodeSvg = $user->twoFactorQrCodeSvg();
-            $decrypted = decrypt((string) $user->two_factor_secret);
-            $this->manualSetupKey = is_string($decrypted) ? $decrypted : '';
-        } catch (Exception) {
-            $this->addError('setupData', 'Failed to fetch setup data.');
-
-            $this->reset('qrCodeSvg', 'manualSetupKey');
-        }
     }
 
     /**
@@ -258,5 +239,24 @@ class Security extends Component
     public function render(): View
     {
         return view('livewire.settings.security');
+    }
+
+    /**
+     * Load the two-factor authentication setup data for the user.
+     */
+    private function loadSetupData(): void
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        try {
+            $this->qrCodeSvg = $user->twoFactorQrCodeSvg();
+            $decrypted = decrypt((string) $user->two_factor_secret);
+            $this->manualSetupKey = is_string($decrypted) ? $decrypted : '';
+        } catch (Exception) {
+            $this->addError('setupData', 'Failed to fetch setup data.');
+
+            $this->reset('qrCodeSvg', 'manualSetupKey');
+        }
     }
 }

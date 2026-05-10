@@ -13,7 +13,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Two-factor challenge')]
-class TwoFactorChallenge extends Component
+final class TwoFactorChallenge extends Component
 {
     /**
      * The recovery code.
@@ -35,7 +35,7 @@ class TwoFactorChallenge extends Component
             'recovery_code' => ['nullable', 'string'],
         ]);
 
-        if ($this->recovery_code) {
+        if ($this->recovery_code !== '' && $this->recovery_code !== '0') {
             $this->loginWithRecoveryCode();
         } else {
             $this->loginWithTwoFactorCode();
@@ -43,9 +43,17 @@ class TwoFactorChallenge extends Component
     }
 
     /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): View
+    {
+        return view('livewire.auth.two-factor-challenge');
+    }
+
+    /**
      * Log in using the two-factor authentication code.
      */
-    protected function loginWithTwoFactorCode(): void
+    private function loginWithTwoFactorCode(): void
     {
         $request = app(TwoFactorLoginRequest::class);
 
@@ -70,7 +78,7 @@ class TwoFactorChallenge extends Component
     /**
      * Log in using the recovery code.
      */
-    protected function loginWithRecoveryCode(): void
+    private function loginWithRecoveryCode(): void
     {
         $request = app(TwoFactorLoginRequest::class);
 
@@ -92,13 +100,5 @@ class TwoFactorChallenge extends Component
 
             $this->addError('recovery_code', __('The provided recovery code was invalid.'));
         }
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View
-    {
-        return view('livewire.auth.two-factor-challenge');
     }
 }

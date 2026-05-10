@@ -11,7 +11,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Log in')]
-class Login extends Component
+final class Login extends Component
 {
     public string $email = '';
 

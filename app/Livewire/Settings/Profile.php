@@ -15,7 +15,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Profile settings')]
-class Profile extends Component
+final class Profile extends Component
 {
     use ProfileValidationRules;
 
@@ -79,7 +79,6 @@ class Profile extends Component
     #[Computed]
     public function hasUnverifiedEmail(): bool
     {
-        /** @var User $user */
         $user = Auth::user();
 
         return $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail();
@@ -88,7 +87,6 @@ class Profile extends Component
     #[Computed]
     public function showDeleteUser(): bool
     {
-        /** @var User $user */
         $user = Auth::user();
 
         if (! $user instanceof MustVerifyEmail) {

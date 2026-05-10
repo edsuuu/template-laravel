@@ -12,7 +12,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Reset password')]
-class ResetPassword extends Component
+final class ResetPassword extends Component
 {
     public string $email = '';
 
@@ -39,7 +39,7 @@ class ResetPassword extends Component
         $user = User::query()->where('email', $this->email)->first();
 
         if (! $user) {
-            $this->addError('email', __('We can\'t find a user with that email address.'));
+            $this->addError('email', __("We can't find a user with that email address."));
 
             return;
         }
