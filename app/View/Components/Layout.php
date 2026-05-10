@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use Closure;
@@ -14,7 +16,8 @@ class Layout extends Component
     public function __construct(
         public ?string $title = null,
         public string $layout = 'navbar', // 'sidebar' or 'navbar'
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

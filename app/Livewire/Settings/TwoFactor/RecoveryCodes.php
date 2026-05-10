@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings\TwoFactor;
 
 use App\Models\User;
@@ -50,7 +52,7 @@ class RecoveryCodes extends Component
             try {
                 $decrypted = decrypt($user->two_factor_recovery_codes);
                 $codes = is_string($decrypted) ? json_decode($decrypted, true) : [];
-                $this->recoveryCodes = is_array($codes) ? array_values(array_filter($codes, 'is_string')) : [];
+                $this->recoveryCodes = is_array($codes) ? array_values(array_filter($codes, is_string(...))) : [];
             } catch (Exception) {
                 $this->addError('recoveryCodes', 'Failed to load recovery codes');
 

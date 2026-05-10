@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Models\User;
@@ -7,12 +9,14 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
+use Override;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         Telescope::night();
@@ -21,14 +25,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
-        Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            return $isLocal ||
-                   $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
-        });
+        Telescope::filter(fn (IncomingEntry $entry) => $isLocal ||
+               $entry->isReportableException() ||
+               $entry->isFailedRequest() ||
+               $entry->isFailedJob() ||
+               $entry->isScheduledTask() ||
+               $entry->hasMonitoredTag());
     }
 
     /**
@@ -52,14 +54,13 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     /**
      * Configure the Telescope authorization services.
      */
+    #[Override]
     protected function authorization(): void
     {
         $this->gate();
 
-        Telescope::auth(function ($request) {
-            return Gate::check('viewTelescope', [$request->user()])
-                ?: abort(403, __('This action is unauthorized.'));
-        });
+        Telescope::auth(fn ($request) => Gate::check('viewTelescope', [$request->user()])
+            ?: abort(403, __('This action is unauthorized.')));
     }
 
     /**
@@ -67,10 +68,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      *
      * This gate determines who can access Telescope in non-local environments.
      */
+    #[Override]
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function (User $user) {
-            return $user->hasRole('Administrador');
-        });
+        Gate::define('viewTelescope', fn (User $user) => $user->hasRole('Administrador'));
     }
 }

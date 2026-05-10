@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Auth;
 
 use App\Models\User;
@@ -74,7 +76,7 @@ class TwoFactorChallenge extends Component
 
         $request->merge(['recovery_code' => $this->recovery_code]);
 
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = $request->challengedUser();
 
         if ($recoveryCode = $request->validRecoveryCode()) {
